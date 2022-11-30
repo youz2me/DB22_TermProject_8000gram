@@ -68,8 +68,11 @@ public class ChangePassword {
         JButton btnNewButton_1 = new JButton("비밀번호 변경");
         btnNewButton_1.setBackground(SystemColor.controlHighlight);
         btnNewButton_1.setBounds(460, 599, 341, 36);
-        centerPanel.add(btnNewButton_1);
+        centerPanel.add(btnNewButton_1);   
         
-        
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.setResizable(false);
 	}
 }
