@@ -9,12 +9,39 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import java.awt.BorderLayout;
 
 public class MainPage {
 
 	private JFrame frame;
-	private JTextField textField;
-
+	
+	class Component extends JFrame {
+		void makeResult(JPanel jpanel, int rank) {
+			JPanel panel_1 = new JPanel();
+		    jpanel.add(panel_1);
+		    panel_1.setLayout(null);
+		    
+		    JButton btnNewButton_1 = new JButton("");
+		    btnNewButton_1.setBounds(0, 6, 75, 60);
+		    //btnNewButton_1.setIcon(new ImageIcon(Start.class.getResource("/data/result_egg.png")));
+		    panel_1.add(btnNewButton_1);
+		   
+		    String name;
+		    String description;
+		    String link;
+		    //String name = Main.rest[rank].getName();
+		   // String description = Main.rest[rank]
+		    //String link = Main.rest[rank]
+		    
+		    JLabel content = new JLabel("\"<html>\" + name + \"<br>@\" + description + \"<br>@\" + link + \"<html>\"");
+		    content.setBounds(75, 65, 500, -60);
+		    panel_1.add(content);
+		}
+	}
 
 	public MainPage() {
 		initialize();
@@ -22,13 +49,11 @@ public class MainPage {
 
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setBackground(Color.WHITE);
+		frame.setBackground(Color.WHITE);
 		frame.setBounds(100, 100, 1000, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		JTextArea textArea_8 = new JTextArea();
-		textArea_8.setBounds(150, 72, 593, 510);
-		frame.getContentPane().add(textArea_8);
 		
 		JButton btnNewButton = new JButton("이미지 버튼");
 		btnNewButton.setBounds(780, 46, 113, 29);
@@ -46,74 +71,110 @@ public class MainPage {
 		});
 		frame.getContentPane().add(btnNewButton_1);
 		
-		JButton btnNewButton_2 = new JButton("");
-		btnNewButton_2.setIcon(new ImageIcon(MainPage.class.getResource("/image/main_logo.png")));
-		btnNewButton_2.setBounds(10, 25, 128, 50);
-		btnNewButton_2.addActionListener(new ActionListener() {
+		JButton logo = new JButton("");
+		logo.setIcon(new ImageIcon(MainPage.class.getResource("/image/main_logo.png")));
+		logo.setBounds(21, 34, 128, 50);
+		logo.setBorderPainted(false);
+		logo.setContentAreaFilled(false);
+		logo.setFocusPainted(false);
+		
+		logo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		frame.getContentPane().add(btnNewButton_2);
+		frame.getContentPane().add(logo);
 		
-		JButton btnNewButton_3 = new JButton("홈");
-		btnNewButton_3.setBounds(10, 111, 75, 29);
-		btnNewButton_3.addActionListener(new ActionListener() {
+		JButton home = new JButton("");
+		home.setBounds(21, 94, 128, 75);
+		home.setBorderPainted(false);
+		home.setContentAreaFilled(false);
+		home.setFocusPainted(false);
+		
+		home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		frame.getContentPane().add(btnNewButton_3);
+		frame.getContentPane().add(home);
 		
-		JButton btnNewButton_4 = new JButton("검색");
-		btnNewButton_4.setBounds(10, 178, 75, 29);
-		btnNewButton_4.addActionListener(new ActionListener() {
+		JButton search = new JButton("");
+		search.setBounds(21, 181, 128, 75);
+		search.setBorderPainted(false);
+		search.setContentAreaFilled(false);
+		search.setFocusPainted(false);
+		
+		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		frame.getContentPane().add(btnNewButton_4);
+		frame.getContentPane().add(search);
 		
-		JButton btnNewButton_5 = new JButton("탐색탭");
-		btnNewButton_5.setBounds(10, 242, 77, 29);
-		btnNewButton_5.addActionListener(new ActionListener() {
+		JButton retrieval = new JButton("");
+		retrieval.setBounds(21, 256, 128, 68);
+		retrieval.setBorderPainted(false);
+		retrieval.setContentAreaFilled(false);
+		retrieval.setFocusPainted(false);
+		
+		retrieval.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		frame.getContentPane().add(btnNewButton_5);
+		frame.getContentPane().add(retrieval);
 		
-		JButton btnNewButton_6 = new JButton("메시지");
-		btnNewButton_6.setBounds(10, 309, 77, 29);
-		btnNewButton_6.addActionListener(new ActionListener() {
+		JButton message = new JButton("");
+		message.setBounds(21, 392, 128, 79);
+		message.setBorderPainted(false);
+		message.setContentAreaFilled(false);
+		message.setFocusPainted(false);
+	
+		message.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		frame.getContentPane().add(btnNewButton_6);
+		frame.getContentPane().add(message);
 		
-		JButton btnNewButton_7 = new JButton("알림");
-		btnNewButton_7.setBounds(10, 380, 75, 29);
-		btnNewButton_7.addActionListener(new ActionListener() {
+		JButton alarm = new JButton("");
+		alarm.setBounds(21, 469, 128, 72);
+		alarm.setBorderPainted(false);
+		alarm.setContentAreaFilled(false);
+		alarm.setFocusPainted(false);
+		
+		alarm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		frame.getContentPane().add(btnNewButton_7);
+		frame.getContentPane().add(alarm);
 		
-		JButton btnNewButton_8 = new JButton("만들기");
-		btnNewButton_8.setBounds(10, 446, 77, 29);
-		btnNewButton_8.addActionListener(new ActionListener() {
+		JButton newPost = new JButton("");
+		newPost.setBounds(21, 538, 128, 79);
+		newPost.setBorderPainted(false);
+		newPost.setContentAreaFilled(false);
+		newPost.setFocusPainted(false);
+		
+		newPost.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		frame.getContentPane().add(btnNewButton_8);
+		frame.getContentPane().add(newPost);
 		
-		JButton btnNewButton_9 = new JButton("프로필");
-		btnNewButton_9.setBounds(10, 525, 77, 29);
-		btnNewButton_9.addActionListener(new ActionListener() {
+		JButton profile = new JButton("");
+		profile.setBounds(10, 664, 128, 29);
+		profile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		frame.getContentPane().add(btnNewButton_9);
+		frame.getContentPane().add(profile);
 		
-		textField = new JTextField();
-		textField.setBounds(150, 25, 471, 29);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon(MainPage.class.getResource("/image/menu.png")));
+		lblNewLabel.setBounds(21, 123, 128, 483);
+		frame.getContentPane().add(lblNewLabel);
+		
+		JPanel timeline = new JPanel();
+		timeline.setBounds(205, 113, 558, 653);
+		frame.getContentPane().add(timeline);
+		timeline.setLayout(new BorderLayout(2, 0));
+		
+		JScrollBar scrollBar = new JScrollBar();
+		timeline.add(scrollBar);
 	}
 }
