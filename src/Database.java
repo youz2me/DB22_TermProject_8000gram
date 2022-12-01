@@ -1,11 +1,14 @@
 import java.sql.*;
 
+import java.sql.*;
 public class Database {
     Connection con = null;
     Statement stmt = null;
+    PreparedStatement pstmt = null;
     String url = "jdbc:mysql://localhost/dbteam";
     String username = "root";
-    String password = "68103jin";
+    String password = "12345";
+    int post_id = 1;
 
     Database() {
         try {
@@ -25,9 +28,10 @@ public class Database {
         String pw = _p;
 
         try {
-            String checkingStr = "SELECT password FROM member WHERE id='" + id + "'";
+            String checkingStr = "SELECT password FROM account WHERE id='" + id + "'";
             ResultSet result = stmt.executeQuery(checkingStr);
 
+            int count = 0;
             while(result.next()) {
                 if(pw.equals(result.getString("password"))) {
                     flag = true;
@@ -38,6 +42,7 @@ public class Database {
                     flag = false;
                     System.out.println("로그인 실패");
                 }
+                count++;
             }
         } catch(Exception e) {
             flag = false;
@@ -46,4 +51,159 @@ public class Database {
 
         return flag;
     }
+    
+    boolean create(String id, String pswd)
+    {
+    	boolean flag = false;
+    	try//계정생성
+		{
+			String sql= "insert into account value (?, ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pswd);
+			pstmt.executeUpdate();
+			flag = true;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			flag = false;
+		}
+    	return flag;
+    }
+    
+    boolean changepswd(String id, String pswd)
+    {
+    	boolean flag = false;
+    	try//비번변경
+		{
+			String sql= "update account set password = ? where ID = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, pswd);
+			pstmt.setString(2, id);
+			pstmt.executeUpdate();
+			flag = true;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			flag = false;
+		}
+    	return flag;
+    }
+    
+    boolean follow(String following_id, String follower_id)
+    {
+    	boolean flag = false;
+    	try//팔로우
+		{
+			String sql = "insert into following value (?, ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, following_id);
+			pstmt.setString(2, follower_id);
+			pstmt.executeUpdate();
+			flag = true;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+    	return flag;
+    }
+    
+    boolean article(String id, String content, String location)
+    {
+    	boolean flag = false;
+    	try//게시글작성
+		{
+			String sql = "insert into article value (?, ?, ?, ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, content);
+			pstmt.setString(3, location);
+			pstmt.setInt(4, post_id);
+			pstmt.executeUpdate();
+			post_id++;
+			flag = true;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+    	return flag;
+    }
+    
+    boolean follwoing_article(String id, String content, String location)
+    {
+    	boolean flag = false;
+    	try//팔로우한사람에게 게시글작성
+		{
+			String sql = "insert into article value (?, ?, ?, ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, content);
+			pstmt.setString(3, location);
+			pstmt.setInt(4, post_id);
+			pstmt.executeUpdate();
+			post_id++;
+			flag = true;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+    	return flag;
+    }
+    
+    ResultSet printarticle(String id)
+    {
+    	ResultSet rs = null;
+    	try//게시글보여주기
+		{
+			String sql = "select content, location from article where ID = ? order by post_id desc";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+    	return rs;
+    }
+    
+    ResultSet printfollowing(String id)
+    {
+    	ResultSet rs = null;
+    	try//내가 팔로우한사람 보여주기
+    	{
+    		String sql = "select follower_id from following  where following_id = ?";
+    		pstmt = con.prepareStatement(sql);
+    		pstmt.setString(1, id);
+    		rs = pstmt.executeQuery();
+    	}
+    	catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+    	return rs;
+    }
+    
+    ResultSet printfollower(String id)
+    {
+    	ResultSet rs = null;
+    	try//나를팔로우한사람 보여주기
+    	{
+    		String sql = "select following_id from following  where follower_id = ?";
+    		pstmt = con.prepareStatement(sql);
+    		pstmt.setString(1, id);
+    		rs = pstmt.executeQuery();
+    	}
+    	catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+    	return rs;
+    }
+     
 }
