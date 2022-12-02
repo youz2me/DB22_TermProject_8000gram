@@ -45,7 +45,6 @@ public class Login extends JFrame {
         loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/* TextField에 입력된 아이디와 비밀번호를 변수에 초기화 */
 	            String uid = id.getText();
 	            String upass = "";
 	            for(int i=0; i<pw.getPassword().length; i++) {
@@ -58,7 +57,7 @@ public class Login extends JFrame {
 	                }
 
 	                else if(uid != null && upass != null) {
-	                    if(_o.db.logincheck(uid, upass)) {	//데이터베이스에 접속해 로그인 정보를 확인하는 부분
+	                    if(_o.db.logincheck(uid, upass)) {	
 	                        System.out.println("로그인 성공");
 	                        JOptionPane.showMessageDialog(null, "로그인에 성공하였습니다");
 	                        new MainPage();
@@ -115,7 +114,12 @@ public class Login extends JFrame {
         logo.setBorderPainted(false);
 		logo.setContentAreaFilled(false);
 		logo.setFocusPainted(false);
-		centerPanel.add(logo);
+		centerPanel.add(logo); 
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/image/or.png")));
+		lblNewLabel.setBounds(623, 446, 326, 25);
+		centerPanel.add(lblNewLabel);
 		
 		JButton changePassword = new JButton("비밀번호를 잊으셨나요?");
 		changePassword.setPreferredSize(new Dimension(75, 63));
@@ -126,11 +130,6 @@ public class Login extends JFrame {
 		changePassword.setContentAreaFilled(false);
 		changePassword.setFocusPainted(false);
 		centerPanel.add(changePassword);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/image/or.png")));
-		lblNewLabel.setBounds(623, 446, 326, 25);
-		centerPanel.add(lblNewLabel);
 		
 		changePassword.addActionListener(new ActionListener() {
 			@Override

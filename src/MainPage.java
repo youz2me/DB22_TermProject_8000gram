@@ -19,30 +19,6 @@ public class MainPage {
 
 	private JFrame frame;
 	
-	class Component extends JFrame {
-		void makeResult(JPanel jpanel, int rank) {
-			JPanel panel_1 = new JPanel();
-		    jpanel.add(panel_1);
-		    panel_1.setLayout(null);
-		    
-		    JButton btnNewButton_1 = new JButton("");
-		    btnNewButton_1.setBounds(0, 6, 75, 60);
-		    //btnNewButton_1.setIcon(new ImageIcon(Start.class.getResource("/data/result_egg.png")));
-		    panel_1.add(btnNewButton_1);
-		   
-		    String name;
-		    String description;
-		    String link;
-		    //String name = Main.rest[rank].getName();
-		   // String description = Main.rest[rank]
-		    //String link = Main.rest[rank]
-		    
-		    JLabel content = new JLabel("\"<html>\" + name + \"<br>@\" + description + \"<br>@\" + link + \"<html>\"");
-		    content.setBounds(75, 65, 500, -60);
-		    panel_1.add(content);
-		}
-	}
-
 	public MainPage() {
 		initialize();
 	}

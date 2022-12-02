@@ -59,7 +59,7 @@ public class ChangePassword {
         lblNewLabel.setBounds(500, 305, 256, 36);
         centerPanel.add(lblNewLabel);
         
-        JLabel lblNewLabel_1 = new JLabel("아이디와 현재 비밀번호, 변경하고 싶은 비밀번호를 입력하시면 비밀번호가 변경됩니다.");
+        JLabel lblNewLabel_1 = new JLabel("아이디와 현재 비밀번호, 변경하고 싶은 비밀번호를 입력하세요.");
         lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
         lblNewLabel_1.setBounds(460, 353, 341, 46);
