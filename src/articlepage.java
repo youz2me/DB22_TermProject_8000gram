@@ -1,11 +1,9 @@
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Action;
@@ -16,9 +14,16 @@ public class articlepage {
 	private JTextField contenttext;
 	private JTextField locationtext;
 	String id;
+	String newid = null;
 	public articlepage(Operator _o, String uid) {
 		o = _o;
 		id = uid;
+		initialize();
+	}
+	public articlepage(Operator _o, String uid, String _newid) {
+		o = _o;
+		id = uid;
+		newid = _newid;
 		initialize();
 	}
 	private void initialize() {
@@ -52,10 +57,21 @@ public class articlepage {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				o.db.article(id, contenttext.getText(), locationtext.getText());
+				MainPage.frame.setVisible(false);
+				if(newid == null)
+				{
+					o.db.article(id, contenttext.getText(), locationtext.getText());
+					frame.setVisible(false);
+					new MainPage(o, id);
+				}
+				else
+				{
+					o.db.follwoing_article(id, newid, contenttext.getText(), locationtext.getText());
+					frame.setVisible(false);
+					new MainPage(o, id, newid);
+				}
 			}
 		});
 		frame.setVisible(true);
 	}
-		
 }

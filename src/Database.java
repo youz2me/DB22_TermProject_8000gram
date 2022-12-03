@@ -1,6 +1,4 @@
 import java.sql.*;
-
-import java.sql.*;
 public class Database {
     Connection con = null;
     Statement stmt = null;
@@ -8,7 +6,7 @@ public class Database {
     String url = "jdbc:mysql://localhost/dbteam";
     String username = "root";
     String password = "12345";
-    int post_id = 1;
+    int post_id;
 
     Database() {
         try {
@@ -72,15 +70,16 @@ public class Database {
     	return flag;
     }
     
-    boolean changepswd(String id, String pswd)
+    boolean changepswd(String id, String newpswd, String pswd)
     {
     	boolean flag = false;
     	try//비번변경
 		{
-			String sql= "update account set password = ? where ID = ?";
+			String sql= "update account set password = ? where ID = ? and password = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, pswd);
+			pstmt.setString(1, newpswd);
 			pstmt.setString(2, id);
+			pstmt.setString(3, pswd);
 			pstmt.executeUpdate();
 			flag = true;
 		}
@@ -114,17 +113,40 @@ public class Database {
     boolean article(String id, String content, String location)
     {
     	boolean flag = false;
+    	ResultSet rs;
     	try//게시글작성
 		{
-			String sql = "insert into article value (?, ?, ?, ?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, id);
-			pstmt.setString(2, content);
-			pstmt.setString(3, location);
-			pstmt.setInt(4, post_id);
-			pstmt.executeUpdate();
-			post_id++;
-			flag = true;
+    		String sql = "select max(post_id) from article";
+    		pstmt = con.prepareStatement(sql);
+    		rs = pstmt.executeQuery();
+    		rs.next();
+    		if(rs.getString(1) == null)
+    		{
+    			post_id = 1;
+    			sql = "insert into article value (?, ?, ?, ?, ?)";
+    			pstmt = con.prepareStatement(sql);
+    			pstmt.setString(1, id);
+    			pstmt.setString(2, id);
+    			pstmt.setString(3, content);
+    			pstmt.setString(4, location);
+    			pstmt.setInt(5, post_id);
+    			pstmt.executeUpdate();
+    			flag = true;
+    		}
+    		else
+    		{
+    			post_id =  Integer.parseInt(rs.getString(1));
+    			post_id++;
+    			sql = "insert into article value (?, ?, ?, ?, ?)";
+    			pstmt = con.prepareStatement(sql);
+    			pstmt.setString(1, id);
+    			pstmt.setString(2, id);
+    			pstmt.setString(3, content);
+    			pstmt.setString(4, location);
+    			pstmt.setInt(5, post_id);
+    			pstmt.executeUpdate();
+    			flag = true;
+    		}
 		}
 		catch (SQLException e)
 		{
@@ -133,21 +155,44 @@ public class Database {
     	return flag;
     }
     
-    boolean follwoing_article(String id, String content, String location)
+    boolean follwoing_article(String id, String newid, String content, String location)
     {
     	boolean flag = false;
-    	try//팔로우한사람에게 게시글작성
-		{
-			String sql = "insert into article value (?, ?, ?, ?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, id);
-			pstmt.setString(2, content);
-			pstmt.setString(3, location);
-			pstmt.setInt(4, post_id);
-			pstmt.executeUpdate();
-			post_id++;
-			flag = true;
-		}
+    	ResultSet rs;
+    	try//팔로워에게 게시글작성
+    	{
+    		String sql = "select max(post_id) from article";
+    		pstmt = con.prepareStatement(sql);
+    		rs = pstmt.executeQuery();
+    		rs.next();
+    		if(rs.getString(1) == null)
+    		{
+    			post_id = 1;
+    			sql = "insert into article value (?, ?, ?, ?, ?)";
+    			pstmt = con.prepareStatement(sql);
+    			pstmt.setString(1, newid);
+    			pstmt.setString(2, id);
+    			pstmt.setString(3, content);
+    			pstmt.setString(4, location);
+    			pstmt.setInt(5, post_id);
+    			pstmt.executeUpdate();
+    			flag = true;
+    		}
+    		else
+    		{
+    			post_id =  Integer.parseInt(rs.getString(1));
+    			post_id++;
+    			sql = "insert into article value (?, ?, ?, ?, ?)";
+    			pstmt = con.prepareStatement(sql);
+    			pstmt.setString(1, newid);
+    			pstmt.setString(2, id);
+    			pstmt.setString(3, content);
+    			pstmt.setString(4, location);
+    			pstmt.setInt(5, post_id);
+    			pstmt.executeUpdate();
+    			flag = true;
+    		}
+    	}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
@@ -160,7 +205,7 @@ public class Database {
     	ResultSet rs = null;
     	try//게시글보여주기
 		{
-			String sql = "select content, location from article where ID = ? order by post_id desc";
+			String sql = "select content, location, writer_id from article where ID = ? order by post_id desc";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();

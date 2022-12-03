@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ChangePassword {
 
@@ -59,7 +61,7 @@ public class ChangePassword {
         lblNewLabel.setBounds(500, 305, 256, 36);
         centerPanel.add(lblNewLabel);
         
-        JLabel lblNewLabel_1 = new JLabel("아이디와 현재 비밀번호, 변경하고 싶은 비밀번호를 입력하세요.");
+        JLabel lblNewLabel_1 = new JLabel("아이디와 현재 비밀번호, 변경하고 싶은 비밀번호를 입력하시면 비밀번호가 변경됩니다.");
         lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 13));
         lblNewLabel_1.setBounds(460, 353, 341, 46);
@@ -68,6 +70,23 @@ public class ChangePassword {
         JButton btnNewButton_1 = new JButton("비밀번호 변경");
         btnNewButton_1.setBackground(SystemColor.controlHighlight);
         btnNewButton_1.setBounds(460, 599, 341, 36);
+        btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String uid = textField_2.getText();
+	            String upass = textField.getText();
+	            String newpass = textField_1.getText();
+				if(uid.equals("") || upass.equals("")) JOptionPane.showMessageDialog(null, "아이디와 비밀번호 모두 입력해주세요", "회원가입 실패", JOptionPane.ERROR_MESSAGE);
+            	else {
+	            	if(_o.db.changepswd(uid, newpass, upass)) 
+	            	{
+	            		JOptionPane.showMessageDialog(null,"비밀번호가 변경되었습니다");
+	            	}
+	            	else {
+	                    JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 일치하지않습니다");
+	            	}
+            	}
+			}
+		});
         centerPanel.add(btnNewButton_1);   
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

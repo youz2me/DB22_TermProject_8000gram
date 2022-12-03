@@ -1,29 +1,41 @@
 import javax.swing.JFrame;
-//import com.jgoodies.forms.layout.FormLayout;
-//import com.jgoodies.forms.layout.ColumnSpec;
-//import com.jgoodies.forms.layout.RowSpec;
 import javax.swing.SpringLayout;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import java.awt.BorderLayout;
+import javax.swing.JScrollPane;
+import java.awt.FlowLayout;
 
 public class MainPage {
 
-	private JFrame frame;
-	
-	public MainPage() {
-		initialize();
+	public static JFrame frame;
+	Operator o;
+	ResultSet rs = null;
+	String newid = null;
+	String usid;
+
+	public MainPage(Operator _o, String uid) {
+		o = _o;
+		initialize(uid);
+	}
+	public MainPage(Operator _o, String uid, String _newid) {
+		o = _o;
+		usid = uid;
+		newid = _newid;
+		initialize(newid);
 	}
 
-	private void initialize() {
+	private void initialize(String uid) {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBackground(Color.WHITE);
@@ -31,24 +43,8 @@ public class MainPage {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnNewButton = new JButton("이미지 버튼");
-		btnNewButton.setBounds(780, 46, 113, 29);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		frame.getContentPane().add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("이름 버튼");
-		btnNewButton_1.setBounds(899, 46, 89, 29);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		frame.getContentPane().add(btnNewButton_1);
-		
 		JButton logo = new JButton("");
-		logo.setIcon(new ImageIcon(MainPage.class.getResource("/image/main_logo.png")));
+		logo.setIcon(new ImageIcon(MainPage.class.getResource("../image/main_logo.png")));
 		logo.setBounds(21, 34, 128, 50);
 		logo.setBorderPainted(false);
 		logo.setContentAreaFilled(false);
@@ -80,6 +76,9 @@ public class MainPage {
 		
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String input = JOptionPane.showInputDialog(null, "search user", "search", JOptionPane.PLAIN_MESSAGE);
+				//입력받은 id넣어서 팔로우아티클실행하도록
+				new MainPage(o, uid, input);
 			}
 		});
 		frame.getContentPane().add(search);
@@ -125,32 +124,114 @@ public class MainPage {
 		newPost.setBorderPainted(false);
 		newPost.setContentAreaFilled(false);
 		newPost.setFocusPainted(false);
-		
 		newPost.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(newid==null) new articlepage(o, uid);
+				else new articlepage(o, usid, newid);
 			}
 		});
 		frame.getContentPane().add(newPost);
 		
-		JButton profile = new JButton("");
-		profile.setBounds(10, 664, 128, 29);
-		profile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		frame.getContentPane().add(profile);
-		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(MainPage.class.getResource("/image/menu.png")));
+		lblNewLabel.setIcon(new ImageIcon(MainPage.class.getResource("../image/menu.png")));
 		lblNewLabel.setBounds(21, 123, 128, 483);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JPanel timeline = new JPanel();
 		timeline.setBounds(205, 113, 558, 653);
 		frame.getContentPane().add(timeline);
-		timeline.setLayout(new BorderLayout(2, 0));
+		timeline.setLayout(null);
 		
-		JScrollBar scrollBar = new JScrollBar();
-		timeline.add(scrollBar);
+		JTextArea time = new JTextArea();
+		time.setBounds(0, 0, 558, 643);
+		timeline.add(time);
+		
+		JButton following = new JButton("following");
+		following.setBounds(814, 123, 113, 41);
+		following.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rs = o.db.printfollowing(uid);
+				try
+				{
+					while(rs.next())
+					{
+			    		String contents = rs.getString(1);
+			    		JOptionPane.showMessageDialog(null, contents, "following", JOptionPane.PLAIN_MESSAGE);
+					}
+				}
+				catch(Exception c)
+				{
+					JOptionPane.showMessageDialog(null, "follow others", "following", JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		});
+		frame.getContentPane().add(following);
+		
+		JButton follower = new JButton("follower");
+		follower.setBounds(814, 190, 113, 41);
+		follower.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rs = o.db.printfollower(uid);
+				try
+				{
+					while(rs.next())
+					{
+			    		String contents = rs.getString(1);
+			    		JOptionPane.showMessageDialog(null, contents, "follower", JOptionPane.PLAIN_MESSAGE);
+					}
+				}
+				catch(Exception c)
+				{
+					JOptionPane.showMessageDialog(null, "Gather your followers", "following", JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		});
+		frame.getContentPane().add(follower);
+		
+		if(newid != null)
+		{
+			JButton follow = new JButton("follow");
+			follow.setBounds(814, 34, 113, 41);
+			follow.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(o.db.follow(usid, uid))
+					{
+	            		JOptionPane.showMessageDialog(null,"팔로우 완료");
+	            	}
+	            	else 
+	            	{
+	                    JOptionPane.showMessageDialog(null, "팔로우 실패");
+	            	}
+				}
+			});
+			frame.getContentPane().add(follow);
+		}
+		
+		rs = o.db.printarticle(uid);
+		try
+		{
+			while(rs.next())
+			{
+	    		String contents = rs.getString(1);
+	    		String locations = rs.getString(2);
+	    		String writer_id = rs.getString(3);
+	    		if(!uid.equals(writer_id)) 
+	    		{
+	    			time.append(contents + " #" );
+		    		time.append(locations);
+	    			time.append("@" + writer_id + "\n");
+	    		}
+	    		else
+	    		{
+	    			time.append(contents + " #" );
+		    		time.append(locations+"\n");
+	    		}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		frame.setVisible(true);
 	}
 }
