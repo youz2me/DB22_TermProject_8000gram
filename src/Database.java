@@ -110,9 +110,9 @@ public class Database {
     	return flag;
     }
     
-    boolean article(String id, String content, String location)
+    void article(String id, String content, String location)
     {
-    	boolean flag = false;
+    	
     	ResultSet rs;
     	try//게시글작성
 		{
@@ -131,7 +131,6 @@ public class Database {
     			pstmt.setString(4, location);
     			pstmt.setInt(5, post_id);
     			pstmt.executeUpdate();
-    			flag = true;
     		}
     		else
     		{
@@ -145,19 +144,17 @@ public class Database {
     			pstmt.setString(4, location);
     			pstmt.setInt(5, post_id);
     			pstmt.executeUpdate();
-    			flag = true;
     		}
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-    	return flag;
     }
     
-    boolean follwoing_article(String id, String newid, String content, String location)
+    void follwoing_article(String id, String newid, String content, String location)
     {
-    	boolean flag = false;
+    	
     	ResultSet rs;
     	try//팔로워에게 게시글작성
     	{
@@ -176,7 +173,6 @@ public class Database {
     			pstmt.setString(4, location);
     			pstmt.setInt(5, post_id);
     			pstmt.executeUpdate();
-    			flag = true;
     		}
     		else
     		{
@@ -190,14 +186,12 @@ public class Database {
     			pstmt.setString(4, location);
     			pstmt.setInt(5, post_id);
     			pstmt.executeUpdate();
-    			flag = true;
     		}
     	}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-    	return flag;
     }
     
     ResultSet printarticle(String id)

@@ -77,7 +77,7 @@ public class MainPage {
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String input = JOptionPane.showInputDialog(null, "search user", "search", JOptionPane.PLAIN_MESSAGE);
-				//입력받은 id넣어서 팔로우아티클실행하도록
+				//입력받은 id넣어서 팔로우 아티클 실행하도록
 				new MainPage(o, uid, input);
 			}
 		});
@@ -124,6 +124,7 @@ public class MainPage {
 		newPost.setBorderPainted(false);
 		newPost.setContentAreaFilled(false);
 		newPost.setFocusPainted(false);
+		
 		newPost.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(newid==null) new articlepage(o, uid);

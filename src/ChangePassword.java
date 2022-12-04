@@ -82,7 +82,7 @@ public class ChangePassword {
 	            		JOptionPane.showMessageDialog(null,"비밀번호가 변경되었습니다");
 	            	}
 	            	else {
-	                    JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 일치하지않습니다");
+	                    JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 일치하지 않습니다");
 	            	}
             	}
 			}
